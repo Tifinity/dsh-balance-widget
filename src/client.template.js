@@ -9,8 +9,16 @@ window.__ModuleLoader__.load({
 
     const NS = 'balance-widget';
     const REFRESH_INTERVAL_MS = 30_000;
-    /** Matches the DSH build this plugin was written against; only sent as a Platform client header. */
-    const CLIENT_VERSION = '0.2.1-rc.3';
+    /** Fallback when the boot payload is unavailable; only sent as a Platform client header. */
+    const FALLBACK_CLIENT_VERSION = '0.2.1-rc.3';
+
+    function clientVersion() {
+      try {
+        return globalThis.__DSH_BOOT__?.release?.version ?? FALLBACK_CLIENT_VERSION;
+      } catch {
+        return FALLBACK_CLIENT_VERSION;
+      }
+    }
 
     const zh = {
       balance: '余额',
@@ -115,7 +123,7 @@ window.__ModuleLoader__.load({
     /** Metadata every account Remote method carries. */
     function accountClient(ctx) {
       return {
-        version: CLIENT_VERSION,
+        version: clientVersion(),
         locale: ctx.locale.getSnapshot().active,
         timezoneOffsetSeconds: -new Date().getTimezoneOffset() * 60,
       };
