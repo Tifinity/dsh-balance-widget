@@ -67,21 +67,19 @@ DeepSeek Harness 客户端插件：在输入框下方的 composer dock 里实时
 
 安装会同时把 bundle 写进 profile，并在 HMR 开启时直接生效。
 
-### 方式 B：CLI + profile patch（没有 plugin_manager 时）
+### 方式 B：CLI（没有 plugin_manager 时）
 
 ```sh
-# 1. 把本地包加进 profile 依赖（会创建 node_modules 链接）
 dsh plugin --profile desktop add /绝对路径/dsh-balance-widget
-
-# 2. 在 ~/.dsh/profiles/desktop/cordis.patch.yml 末尾追加：
-#    - insert:
-#        - id: balance-widget
-#          name: dsh-balance-widget
 ```
 
-第 2 步是 profile 的用户覆盖层；写入后如果 profile 开启了 HMR 会立即重载，否则重启 Harness 生效。
+包声明了 `dsh.bundle.patch`，因此这条命令会同时完成两件事：把包加进 profile 依赖（`link:` 到本地目录），并把 `dsh-balance-widget` 追加到 `dsh.profile.bundles`。bundle 的 [`cordis.patch.yml`](cordis.patch.yml) 再插入插件行。profile 开启 HMR 时立即生效；本机安装时就是热加载，无需重启。
 
-卸载：删除 `cordis.patch.yml` 里的 `insert` 条目，并从 profile 的 `package.json` 依赖中移除该包。
+卸载：从 profile 的 `package.json` 依赖和 `dsh.profile.bundles` 中移除该包名，然后 `pnpm install`。
+
+### 本机状态
+
+已安装到 `desktop` profile 并在运行中的 GUI 里验证：输入框下方实际渲染为 `¥xx.xx · 空闲 1天17小时`（周六），悬停标题包含「更新于 / 时段: 周末 / 距离进入高峰 11-02 09:00」。余额与「设置 → 账号与余额」一致。
 
 ## 开发
 
