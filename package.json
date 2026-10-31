@@ -1,0 +1,43 @@
+{
+  "name": "dsh-balance-widget",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shows the DeepSeek account balance and the current peak/idle window in the Harness composer dock.",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg"
+  ],
+  "scripts": {
+    "build": "node scripts/build-client.mjs",
+    "test": "node --test",
+    "check": "npm run build && node --check client.js && npm test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-api-remotes",
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  }
+}

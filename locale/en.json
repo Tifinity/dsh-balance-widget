@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Balance & Window",
+    "description": "Shows the DeepSeek account balance and the current Beijing-time peak or idle window below the composer."
+  }
+}

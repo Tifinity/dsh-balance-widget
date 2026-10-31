@@ -1,0 +1,6 @@
+# Bundle patch: selecting this bundle in a profile inserts the plugin row.
+# The row id is the plugin id used by the plugin manager; `name` resolves from
+# the profile's node_modules (or the dsh installation for shipped bundles).
+- insert:
+    - id: balance-widget
+      name: dsh-balance-widget
